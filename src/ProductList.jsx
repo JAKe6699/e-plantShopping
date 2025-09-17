@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
+import { addItem } from './CartSlice';
+
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+    const [addedToCart, setAddedToCart] = useState({});
 
     const plantsArray = [
         {
@@ -242,6 +245,7 @@ function ProductList({ onHomeClick }) {
         e.preventDefault();
         setShowCart(true); // Set showCart to true when cart icon is clicked
     };
+
     const handlePlantsClick = (e) => {
         e.preventDefault();
         setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
@@ -252,6 +256,16 @@ function ProductList({ onHomeClick }) {
         e.preventDefault();
         setShowCart(false);
     };
+
+    const handleAddToCart = (product) => {
+        dispatch(addItem(product)); // Dispatch the action to add the product to the cart (Redux action)
+
+        setAddedToCart((prevState) => ({
+            ...prevState, //spread the previous state to retain existing entries
+            [product.name]: true, // set the product's name as a key with value 'true' to mark it
+        }));
+    };
+
     return (
         <>
         <div className="navbar" style={styleObj}>
@@ -275,46 +289,37 @@ function ProductList({ onHomeClick }) {
         <div className="main_container">
         {!showCart ? (
             <div className="product-grid">
-            {plantsArray.map((item, index) => (
-                <div id="venue" className="plant_cat_container container_main">
-                     <div className="text">
-                        <h1>Plant Selection</h1>
-                    </div>
-                    <div className="plant_selection">
-                    <div className="plant_main" key={index}>
-                        <div className="img">
-                            <img src={item.img} alt={item.name} />
+            {plantsArray.map((category, catIndex) => (
+              <div key={catIndex} className="category-section">
+              <h1 className="category-header">{category.category}</h1>
+                <div className="category-product-list">
+                {category.plants.map((item, index) => (
+                    <div key={index} className="product-card">
+                        <div className="product-image">
+                            <img src={item.image} alt={item.name} />
                         </div>
-                        <div className="text">{item.name}</div>
-                        <div>${item.cost}</div>
+                        <div className="product_title">{item.name}</div>
+                        <div className="product_descriptions">{item.description}</div>
+                        <div>{item.cost}</div>
                         <div className="button_container">
-                            <>
                             <button
-                                className={venueItems[index].quantity === 0 ? "btn-warning btn-disabled" : "btn-minus btn-warning"}
-                                onClick={() => handleRemoveFromCart(index)}
-                            >
-                                &#8211;
-                            </button>
-                            <span className="selected_count">
-                                {venueItems[index].quantity > 0 ? ` ${venueItems[index].quantity}` : "0"}
-                            </span>
-                            <button
-                                className={remainingAuditoriumQuantity === 0? "btn-success btn-disabled" : "btn-success btn-plus"}
+                                className="product-button"
                                 onClick={() => handleAddToCart(index)}
                             >
-                                &#43;
+                                Add to Cart
                             </button>
-                            </>
                         </div> {/* button_container */}
-                    </div> {/* plant_selection */}
-                    </div> {/* plant_main */}
-                </div> {/* plant_cat_container */}
-            )}
-            </div> {/* product_grid */}
+                    </div> 
+                ))}
+                </div> {/* category-plants */}
+              </div> 
+            ))}
+            </div> 
         ) : (
             <CartItem onContinueShopping={handleContinueShopping} />
         )}
         </div> {/* main container */}
+      </>
     );
 }
 

@@ -95,7 +95,7 @@ function ProductList({ onHomeClick }) {
             category: "Insect Repellent Plants",
             plants: [
                 {
-                    name: "oregano",
+                    name: "Oregano",
                     image: "https://cdn.pixabay.com/photo/2015/05/30/21/20/oregano-790702_1280.jpg",
                     description: "The oregano plants contains compounds that can deter certain insects.",
                     cost: "$10"
@@ -298,13 +298,13 @@ function ProductList({ onHomeClick }) {
                         <div className="product-image">
                             <img src={item.image} alt={item.name} />
                         </div>
-                        <div className="product_title">{item.name}</div>
+                        <div className="product-title">{item.name}</div>
                         <div className="product_descriptions">{item.description}</div>
                         <div>{item.cost}</div>
                         <div className="button_container">
                             <button
                                 className="product-button"
-                                onClick={() => handleAddToCart(index)}
+                                onClick={() => handleAddToCart(item)}
                             >
                                 Add to Cart
                             </button>

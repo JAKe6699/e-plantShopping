@@ -237,9 +237,7 @@ function ProductList({ onHomeClick }) {
         fontSize: '30px',
         textDecoration: 'none',
     }
-
-    const CartItems = useSelector((state) => state.cart.items); // adjust path based on your store
-    
+ 
     const handleHomeClick = (e) => {
         e.preventDefault();
         onHomeClick();
@@ -256,8 +254,7 @@ function ProductList({ onHomeClick }) {
         setShowCart(false); // Hide the cart when navigating to About Us
     };
 
-    const handleContinueShopping = (e) => {
-        e.preventDefault();
+    const handleContinueShopping = () => {
         setShowCart(false);
     };
 
@@ -269,10 +266,6 @@ function ProductList({ onHomeClick }) {
             [product.name]: true, // set the product's name as a key with value 'true' to mark it
         }));
     };
-
-    const calculateTotalQuantity = () => {
-        return CartItems ? CartItems.reduce((total, item) => total + item.quantity, 0) : 0;
-         };
 
     const totalQuantity = useSelector((state) =>
         state.cart.items.reduce((total, item) => total + item.quantity, 0)
@@ -307,7 +300,7 @@ function ProductList({ onHomeClick }) {
                         padding: '4px 8px',
                         fontSize: '14px',
                         fontWeight: 'bold',
-                        transform: 'translate(50%, -50%)',
+                        transform: 'none',
                         pointerEvents: 'none'
                         }}>
                         {totalQuantity}
